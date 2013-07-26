@@ -7,13 +7,18 @@ from oucnews.newsspider import NewsSpider
 
 
 class JiaoWuChuSpider(NewsSpider):
+    """教务处 新闻通知"""
 
     name = "教务处"
 
-    start_urls = ["http://jwc.ouc.edu.cn:8080/jwwz/index.jsp"]
+    start_urls = [
+        "http://jwc.ouc.edu.cn:8080/jwwz/index.jsp",
+    ]
 
-    followed_urls_scope = "//td[@class='td7']"
-    followed_urls_pattern = r"news\.jsp\?news_id=\d+"
+    list_extract_scope = "//td[@class='td7']"
+    list_extract_field = {
+        'link': ".//td[@width='65%']//@href",
+    }
 
     item_extract_scope = "//td[@class='td7']"
     item_extract_field = {

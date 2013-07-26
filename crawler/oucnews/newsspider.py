@@ -4,50 +4,68 @@ from __future__ import division, print_function, unicode_literals
 
 from itertools import islice
 
+from scrapy.http import Request
 from scrapy.selector import HtmlXPathSelector
-from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
-from scrapy.contrib.spiders import CrawlSpider, Rule
+from scrapy.spider import BaseSpider
 
 from oucnews import util
 from oucnews.items import NewsItem
 
 
-class NewsSpider(CrawlSpider):
+class NewsSpider(BaseSpider):
 
-    followed_urls_scope = ""
-    followed_urls_pattern = r""
-    followed_urls_max_count = 3
+    default_encoding = 'utf-8'
+
+    start_urls = []
+
+    list_extract_scope = ""
+    list_extract_field = {}
 
     item_extract_scope = ""
-    item_extract_field = { }
+    item_extract_field = {}
+
+    item_max_count = 3
 
     datetime_format = ""
 
     def __init__(self, *a, **kw):
-        self.rules = (
-            Rule(SgmlLinkExtractor(allow=self.followed_urls_pattern,
-                                   restrict_xpaths=self.followed_urls_scope),
-                 callback='parse_item', follow=True),
-        )
-
         super(NewsSpider, self).__init__(*a, **kw)
+        self.items = {}
 
     def parse(self, response):
-        return islice(super(NewsSpider, self).parse(response),
-                      self.followed_urls_max_count)
+        h = HtmlXPathSelector(response)
+        if self.list_extract_scope != "":
+            h = h.select(self.list_extract_scope)
+
+        fields = {k: h.select(v).extract()
+                  for k, v in self.list_extract_field.items()}
+
+        fields['link'] = [util.normalize_url(x, response.url)
+                          for x in fields['link']]
+        fields['link'] = self.process_followed_links(fields['link'], response)
+
+        for value in zip(*fields.values()):
+            item = NewsItem(zip(fields.keys(), value))
+            item['id_'] = self.generate_item_id(item['link'])
+            self.items[item['id_']] = item
+
+        for link in fields['link'][:3]:
+            yield Request(url=link, callback=self.parse_item)
 
     def parse_item(self, response):
         h = HtmlXPathSelector(response)
         if self.item_extract_scope != "":
             h = h.select(self.item_extract_scope)
 
-        i = NewsItem()
+        id_ = self.generate_item_id(response.url)
+        i = self.items[id_]
         for k in self.item_extract_field:
             i[k] = h.select(self.item_extract_field[k]).extract()[0]
-        i['id_'] = self.generate_item_id(response.url)
-        i['link'] = response.url
 
         return self.process_item(i, response)
+
+    def process_followed_links(self, links, response):
+        return links
 
     def generate_item_id(self, url):
         return url
