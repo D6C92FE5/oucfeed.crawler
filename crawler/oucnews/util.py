@@ -10,7 +10,13 @@ import readability
 from w3lib.url import safe_url_string
 
 
-parse_datetime = datetime.strptime
+def encode_if_unicode(string, encoding='utf-8'):
+    return string.encode(encoding) if isinstance(string, unicode) else string
+
+
+def parse_datetime(date_string, format_):
+    return datetime.strptime(encode_if_unicode(date_string),
+                             encode_if_unicode(format_))
 
 
 def unwrap_html(html):
