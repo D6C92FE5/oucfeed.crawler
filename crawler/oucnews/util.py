@@ -26,7 +26,11 @@ def unwrap_html(html):
 
 
 def clean_html(html, url=None):
-    return readability.Document(html, url=url).summary(True)
+    try:
+        html = readability.Document(html, url=url).summary(True)
+    except Exception:
+        pass
+    return html
 
 
 def extract_number(string, index):

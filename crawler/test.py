@@ -10,4 +10,4 @@ from scrapy.cmdline import execute
 
 if os.path.exists("test.json"):
     os.remove("test.json")
-execute("scrapy crawl 教务处 -o test.json -t json".split())
+execute("scrapy crawl 院系/海生 -o test.json -t json".split())

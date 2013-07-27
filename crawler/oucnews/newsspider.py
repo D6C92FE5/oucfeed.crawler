@@ -68,7 +68,7 @@ class NewsSpider(BaseSpider):
         return links
 
     def generate_item_id(self, url):
-        return url
+        return self.name + util.extract_number(url, -1)
 
     def process_item(self, item, response):
         for k in item:
