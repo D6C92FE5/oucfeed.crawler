@@ -38,14 +38,14 @@ class NewsSpider(BaseSpider):
             h = h.select(self.list_extract_scope)
 
         fields = {k: h.select(v).extract()
-                  for k, v in self.list_extract_field.items()}
+                  for k, v in self.list_extract_field.iteritems()}
 
         fields['link'] = [util.normalize_url(x, response.url)
                           for x in fields['link']]
         fields['link'] = self.process_followed_links(fields['link'], response)
 
-        for value in zip(*fields.values()):
-            item = NewsItem(zip(fields.keys(), value))
+        for value in zip(*fields.itervalues()):
+            item = NewsItem(zip(fields.iterkeys(), value))
             item['id_'] = self.generate_item_id(item['link'])
             self.items[item['id_']] = item
 

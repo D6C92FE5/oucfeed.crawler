@@ -6,7 +6,7 @@ from oucnews import util
 from oucnews.newsspider import NewsSpider
 
 
-class JiaoWuChuSpider(NewsSpider):
+class Spider(NewsSpider):
     """教务处 新闻通知"""
 
     name = "教务处"

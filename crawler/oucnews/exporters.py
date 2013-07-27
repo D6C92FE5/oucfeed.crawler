@@ -21,5 +21,5 @@ class JsonItemExporter(exporter.JsonItemExporter):
             self.file.write(',\n')
         itemdict = dict()
         for key, value in self._get_serialized_fields(item):
-            itemdict[self._to_str_if_unicode(key)] = value # 防止
+            itemdict[self._to_str_if_unicode(key)] = value # 防止解码错误
         self.file.write(self.encoder.encode(itemdict))
