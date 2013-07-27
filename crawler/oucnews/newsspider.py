@@ -49,7 +49,7 @@ class NewsSpider(BaseSpider):
             item['id_'] = self.generate_item_id(item['link'])
             self.items[item['id_']] = item
 
-        for link in fields['link'][:3]:
+        for link in fields['link'][:self.item_max_count]:
             yield Request(url=link, callback=self.parse_item)
 
     def parse_item(self, response):

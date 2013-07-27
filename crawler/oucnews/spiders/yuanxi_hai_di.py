@@ -32,6 +32,8 @@ class Spider(NewsSpider):
         'content': ".//div[@align='left']",
     }
 
+    item_max_count = 8 + NewsSpider.item_max_count # 抓取“通知公告”中全部内容
+
     datetime_format = "%Y-%m-%d %H:%M:%S"
 
     def process_datetime(self, datetime, response):
