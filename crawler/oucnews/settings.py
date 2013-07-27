@@ -8,7 +8,11 @@ BOT_NAME = 'oucnews'
 SPIDER_MODULES = ['oucnews.spiders']
 NEWSPIDER_MODULE = 'oucnews.spiders'
 
-#USER_AGENT = 'oucnews (+http://www.yourdomain.com)'
+LOG_LEVEL = 'INFO'
+
+DOWNLOAD_TIMEOUT = 30
+
+USER_AGENT = 'oucnews/test (https://github.com/D6C92FE5/oucfeed)'
 
 FEED_EXPORTERS = {
     'json': 'oucnews.exporters.JsonItemExporter',
