@@ -2,7 +2,7 @@
 
 from __future__ import division, print_function, unicode_literals
 
-from itertools import islice
+from itertools import cycle
 
 from scrapy.http import Request
 from scrapy.selector import HtmlXPathSelector
@@ -39,6 +39,8 @@ class NewsSpider(BaseSpider):
 
         fields = {k: h.select(v).extract()
                   for k, v in self.list_extract_field.iteritems()}
+        fields = {k: v if k == 'link' else cycle(v)
+                  for k, v in fields.iteritems()}
 
         fields['link'] = [util.normalize_url(x, response.url)
                           for x in fields['link']]

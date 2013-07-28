@@ -24,7 +24,7 @@ class Spider(NewsSpider):
         'datetime': ".//font[@color='#999999']/text()",
     }
 
-    item_extract_scope ="//table[@cellpadding='2']"
+    item_extract_scope = "//table[@cellpadding='2']"
     item_extract_field = {
         'category': "//td[@width='590']/a[3]/text()",
         'title': ".//strong[1]/text()",
