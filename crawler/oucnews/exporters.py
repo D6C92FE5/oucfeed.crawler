@@ -23,3 +23,10 @@ class JsonItemExporter(exporter.JsonItemExporter):
         for key, value in self._get_serialized_fields(item):
             itemdict[self._to_str_if_unicode(key)] = value # 防止解码错误
         self.file.write(self.encoder.encode(itemdict))
+
+
+class JavascriptItemExporter(JsonItemExporter):
+    """输出用于 test-viewer.html 的 JavaScript 文件"""
+
+    def start_exporting(self):
+        self.file.write("data = [\n")

@@ -8,6 +8,6 @@ import os
 from scrapy.cmdline import execute
 
 
-if os.path.exists("test.json"):
-    os.remove("test.json")
-execute("scrapy crawl 院系/海生 -o test.json -t json".split())
+if os.path.exists("test.js"):
+    os.remove("test.js")
+execute("scrapy crawl 院系/海生 -o test.js -t js".split())

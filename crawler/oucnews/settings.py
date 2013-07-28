@@ -16,4 +16,5 @@ USER_AGENT = 'oucnews/test (https://github.com/D6C92FE5/oucfeed)'
 
 FEED_EXPORTERS = {
     'json': 'oucnews.exporters.JsonItemExporter',
+    'js': 'oucnews.exporters.JavascriptItemExporter',
 }
