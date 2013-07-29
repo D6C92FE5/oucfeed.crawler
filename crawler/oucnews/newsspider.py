@@ -4,6 +4,7 @@ from __future__ import division, print_function, unicode_literals
 
 from itertools import cycle
 
+from scrapy import log
 from scrapy.http import Request
 from scrapy.selector import HtmlXPathSelector
 from scrapy.spider import BaseSpider
@@ -33,38 +34,49 @@ class NewsSpider(BaseSpider):
         self.items = {}
 
     def parse(self, response):
-        h = HtmlXPathSelector(response)
+        hxs = HtmlXPathSelector(response)
         if self.list_extract_scope != "":
-            h = h.select(self.list_extract_scope)
+            hxs = hxs.select(self.list_extract_scope)
 
-        fields = {k: h.select(v).extract()
-                  for k, v in self.list_extract_field.iteritems()}
-        fields = {k: v if k == 'link' else cycle(v)
-                  for k, v in fields.iteritems()}
+        fields = {}
+        for k, v in self.list_extract_field.iteritems():
+            selected = hxs.select(v).extract()
+            selected = [self.process_item_field(k,x,response) for x in selected]
+            if k != 'link':  # 数量取 link 的数量，其他项循环填充
+                selected = cycle(selected)
+            fields[k] = selected
 
-        fields['link'] = [util.normalize_url(x, response.url)
-                          for x in fields['link']]
-        fields['link'] = self.process_followed_links(fields['link'], response)
-
+        # 暂存含有部分信息的项目，在 parse_item 补充完整后再输出
         for value in zip(*fields.itervalues()):
             item = NewsItem(zip(fields.iterkeys(), value))
             item['id_'] = self.generate_item_id(item['link'])
             self.items[item['id_']] = item
 
+        fields['link'] = self.process_followed_links(fields['link'], response)
+
         for link in fields['link'][:self.item_max_count]:
             yield Request(url=link, callback=self.parse_item)
 
     def parse_item(self, response):
-        h = HtmlXPathSelector(response)
+        hxs = HtmlXPathSelector(response)
         if self.item_extract_scope != "":
-            h = h.select(self.item_extract_scope)
+            hxs = hxs.select(self.item_extract_scope)
 
         id_ = self.generate_item_id(response.url)
         i = self.items[id_]
-        for k in self.item_extract_field:
-            i[k] = h.select(self.item_extract_field[k]).extract()[0]
+        failed = []
+        for k, v in self.item_extract_field.iteritems():
+            selected = hxs.select(v).extract()
+            if len(selected) > 0:
+                i[k] = self.process_item_field(k, selected[0], response)
+            else:
+                i[k] = ""
+                failed.append(k)
+        if failed:
+            log.msg("extract failed in {} ({})".format(response.url,
+                ", ".join(failed)), level=log.WARNING, spider=self)
 
-        return self.process_item(i, response)
+        return i
 
     def process_followed_links(self, links, response):
         return links
@@ -72,16 +84,14 @@ class NewsSpider(BaseSpider):
     def generate_item_id(self, url):
         return self.name + util.extract_number(url, -1)
 
-    def process_item(self, item, response):
-        for k in item:
-            item[k] = getattr(self, 'process_'+k)(item[k].strip(), response)
-        return item
+    def process_item_field(self, field, value, response):
+        return getattr(self, 'process_'+field)(value.strip(), response)
 
     def process_id_(self, id_, response):
         return id_
 
     def process_link(self, link, response):
-        return link
+        return util.normalize_url(link, response.url)
 
     def process_datetime(self, datetime, response):
         return util.parse_datetime(datetime, self.datetime_format)
