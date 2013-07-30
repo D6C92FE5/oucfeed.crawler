@@ -70,7 +70,6 @@ class NewsSpider(BaseSpider):
             if len(selected) > 0:
                 i[k] = self.process_item_field(k, selected[0], response)
             else:
-                i[k] = ""
                 failed.append(k)
         if failed:
             log.msg("extract failed in {} ({})".format(response.url,
