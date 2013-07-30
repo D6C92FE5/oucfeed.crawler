@@ -15,8 +15,6 @@ from oucnews.items import NewsItem
 
 class NewsSpider(BaseSpider):
 
-    default_encoding = 'utf-8'
-
     start_urls = []
 
     list_extract_scope = ""
@@ -29,11 +27,17 @@ class NewsSpider(BaseSpider):
 
     datetime_format = ""
 
+    force_response_encoding = None
+
     def __init__(self, *a, **kw):
         super(NewsSpider, self).__init__(*a, **kw)
         self.items = {}
 
     def parse(self, response):
+        if self.force_response_encoding is not None:
+            response._encoding = self.force_response_encoding
+            response._cached_ubody = None # 删除解码缓存
+
         hxs = HtmlXPathSelector(response)
         if self.list_extract_scope != "":
             hxs = hxs.select(self.list_extract_scope)
@@ -58,6 +62,10 @@ class NewsSpider(BaseSpider):
             yield Request(url=link, callback=self.parse_item)
 
     def parse_item(self, response):
+        if self.force_response_encoding is not None:
+            response._encoding = self.force_response_encoding
+            response._cached_ubody = None # 删除解码缓存
+
         hxs = HtmlXPathSelector(response)
         if self.item_extract_scope != "":
             hxs = hxs.select(self.item_extract_scope)
