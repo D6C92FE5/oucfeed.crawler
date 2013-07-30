@@ -10,30 +10,36 @@ class Spider(NewsSpider):
     """海洋环境学院
 
     访问不存在的 cId 对应的列表页貌似可以获得全部分类的内容
-    党团相关的内容在另一个网站 http://www2.ouc.edu.cn/cpeo/dangtuan/index.asp
-    虽然和这个网站很相似但代码有一些差别，不要用同一个Spider抓取
+    注意iframe，以及内容页存在不带iframe的版本
+    列表页本身不带编码信息，需要手动指定
     """
 
-    name = "院系/海环"
+    name = "院系/海环/党团"
 
     start_urls = [
-        "http://www2.ouc.edu.cn/cpeo/news.asp?cId=0",
+        "http://www2.ouc.edu.cn/cpeo/dangtuan/news.asp?cId=0",
     ]
 
-    list_extract_scope = "//table[@width='90%']"
+    list_extract_scope = ""
     list_extract_field = {
-        'link': ".//a[@class='font1link']/@href",
-        'datetime': ".//td[@class='lv2']/text()",
+        'link': "//a[@class='font1link']/@href",
+        'datetime': "//td[@class='lv2']/text()",
     }
 
     item_extract_scope = "//td[@width='77%']/table"
     item_extract_field = {
         'category': ".//strong[1]//text()",
         'title': ".//strong[2]/text()",
-        'content': ".//td[@class='font1'][2]",
+        'content': ".//div[@id='divContent']",
     }
 
     datetime_format = "%Y-%m-%d"
+
+    force_response_encoding = 'gb18030'
+
+    def process_link(self, link, response):
+        link = link.replace("ny.asp", "ny1.asp")
+        return util.normalize_url(link, response.url)
 
     def process_category(self, category, response):
         category = category[:-2]
