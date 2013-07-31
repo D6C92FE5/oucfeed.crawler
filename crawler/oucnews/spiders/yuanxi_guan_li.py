@@ -30,6 +30,7 @@ class Spider(NewsSpider):
         'link': ".//@href",
         'datetime': ".//td[@id='time']/text()",
         'category': "//td[@id='list-tittle']/text()",
+        'title': ".//a/text()",
     }
 
     item_extract_scope = ""

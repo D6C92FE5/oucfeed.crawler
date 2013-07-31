@@ -9,19 +9,23 @@ from oucnews.newsspider import NewsSpider
 class Spider(NewsSpider):
     """化学化工学院
 
-    这个网站除栏目“学院通知”之外的新闻栏目多年未更新，因此不进行抓取
+    一些栏目没有抓取
     """
 
     name = "院系/化学"
 
     start_urls = [
         "http://www2.ouc.edu.cn/chem/ShowClass2.asp?ClassID=13",
+        "http://www2.ouc.edu.cn/chem/ShowClass2.asp?ClassID=25",
+        "http://www2.ouc.edu.cn/chem/ShowClass2.asp?ClassID=26",
     ]
 
     list_extract_scope = "//td[@height='150']"
     list_extract_field = {
         'link': ".//@href",
         'datetime': ".//font[@color='#999999']/text()",
+        'category': "//font[@class='m_tittle']/text()",
+        'title': ".//a/text()",
     }
 
     item_extract_scope = "//table[@cellpadding='2']"

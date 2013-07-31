@@ -18,6 +18,8 @@ class Spider(NewsSpider):
     list_extract_scope = "//td[@class='td7']"
     list_extract_field = {
         'link': ".//td[@width='65%']//@href",
+        'datetime': ".//td[@width='25%']//text()",
+        'title': ".//td[@width='65%']//text()",
     }
 
     item_extract_scope = "//td[@class='td7']"

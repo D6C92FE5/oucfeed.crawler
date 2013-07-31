@@ -9,7 +9,7 @@ from oucnews.newsspider import NewsSpider
 class Spider(NewsSpider):
     """海洋生命学院
 
-    这个网站虽然有包含全部分类内容的列表，但不是按时间排序的，只能对每个分类分别抓取
+    这个网站虽然有包含全部分类内容的列表，但不是按时间排序的，必须对每个分类分别抓取
     """
 
     name = "院系/海生"
@@ -30,6 +30,8 @@ class Spider(NewsSpider):
     list_extract_scope = "//div[@id='right']//ul[2]"
     list_extract_field = {
         'link': ".//@href",
+        'category': "//div[@id='dangqian']//strong/text()",
+        'title': ".//a/text()",
     }
 
     item_extract_scope = "//div[@id='product']"

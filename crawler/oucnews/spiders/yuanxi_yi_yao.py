@@ -31,6 +31,7 @@ class Spider(NewsSpider):
         'link': ".//@href",
         'datetime': ".//td[@width='15%']/text()",
         'category': "//span[@class='STYLE2']/text()",
+        'title': ".//a/text()",
     }
 
     item_extract_scope = "//table[@width='630']"

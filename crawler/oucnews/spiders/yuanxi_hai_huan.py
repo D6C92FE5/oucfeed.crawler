@@ -9,7 +9,6 @@ from oucnews.newsspider import NewsSpider
 class Spider(NewsSpider):
     """海洋环境学院
 
-    访问不存在的 cId 对应的列表页貌似可以获得全部分类的内容
     党团相关的内容在另一个网站 http://www2.ouc.edu.cn/cpeo/dangtuan/index.asp
     虽然和这个网站很相似但代码有一些差别，不要用同一个Spider抓取
     """
@@ -17,13 +16,16 @@ class Spider(NewsSpider):
     name = "院系/海环"
 
     start_urls = [
-        "http://www2.ouc.edu.cn/cpeo/news.asp?cId=0",
+        "http://www2.ouc.edu.cn/cpeo/news.asp?cId=1",
+        "http://www2.ouc.edu.cn/cpeo/news.asp?cId=2",
     ]
 
     list_extract_scope = "//table[@width='90%']"
     list_extract_field = {
         'link': ".//a[@class='font1link']/@href",
         'datetime': ".//td[@class='lv2']/text()",
+        'category': "//td[@width='80%']//text()",
+        'title': ".//a[@class='font1link']/text()",
     }
 
     item_extract_scope = "//td[@width='77%']/table"

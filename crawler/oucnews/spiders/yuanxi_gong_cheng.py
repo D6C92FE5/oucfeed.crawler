@@ -27,6 +27,8 @@ class Spider(NewsSpider):
     list_extract_field = {
         'link': ".//@href",
         'datetime': ".//td[@width='14%']/text()",
+        'category': "//div[@class='nyrighttopleft']/text()",
+        'title': ".//a/text()",
     }
 
     item_extract_scope = "//div[@class='nyrightzi']"
