@@ -25,7 +25,7 @@ class Spider(NewsSpider):
         'link': ".//a[@class='font1link']/@href",
         'datetime': ".//td[@class='lv2']/text()",
         'category': "//td[@width='80%']//text()",
-        'title': ".//a[@class='font1link']/text()",
+        'title': ".//a[@class='font1link']/@title",
     }
 
     item_extract_scope = "//td[@width='77%']/table"

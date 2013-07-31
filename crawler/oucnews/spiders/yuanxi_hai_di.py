@@ -9,7 +9,7 @@ from oucnews.newsspider import NewsSpider
 class Spider(NewsSpider):
     """海洋地球科学学院
 
-    **注意此网站列表页有问题，不显示最近的几篇文章，应当从首页抓取**
+    注意此网站列表页有问题，不显示最近的几篇文章，应当从首页抓取
     首页上的栏目“通知公告”包括栏目“新闻动态”之外的栏目的内容
     """
 
@@ -22,7 +22,7 @@ class Spider(NewsSpider):
     list_extract_scope = "//table[@width='353']"
     list_extract_field = {
         'link': ".//@href",
-        'title': ".//a/text()",
+        'title': ".//@title",
     }
 
     item_extract_scope = "//table[@class='box']"
