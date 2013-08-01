@@ -9,7 +9,7 @@ from oucnews.newsspider import NewsSpider
 class Spider(NewsSpider):
     """管理学院
 
-    此网站有些内容页直接用JS跳转到其他网站的页面
+    这个网站有些内容页直接用JS跳转到其他网站的页面
     """
 
     name = "院系/管理"

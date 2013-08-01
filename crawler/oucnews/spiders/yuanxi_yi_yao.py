@@ -9,7 +9,7 @@ from oucnews.newsspider import NewsSpider
 class Spider(NewsSpider):
     """医药学院
 
-    此网站的内容页链接尾部有一些奇怪的东西
+    这个网站的内容页链接尾部有一些奇怪的东西
     党团相关的内容在另一个网站 http://222.195.158.131/yiyaodtgz/
     """
 

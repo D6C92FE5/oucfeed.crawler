@@ -9,7 +9,7 @@ from oucnews.newsspider import NewsSpider
 class Spider(NewsSpider):
     """工程学院
 
-    此网站的内容页链接尾部有一些奇怪的东西
+    这个网站的内容页链接尾部有一些奇怪的东西
     栏目“图片新闻”没有抓取
     党团相关的内容在另一个网站 http://www3.ouc.edu.cn/gongcheng/dangtuan/
     """

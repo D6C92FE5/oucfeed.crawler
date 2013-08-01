@@ -9,7 +9,7 @@ from oucnews.newsspider import NewsSpider
 class Spider(NewsSpider):
     """环境科学与工程学院
 
-    注意此网站内容页文章内容不单独在某个标签里
+    注意这个网站内容页文章内容不单独在某个标签里
     虽然内容页有日期但在iframe里不方便抓取，所以从列表页抓取时间
     一些栏目没有抓取，其中有一些列表中链接直接为附件的
     """

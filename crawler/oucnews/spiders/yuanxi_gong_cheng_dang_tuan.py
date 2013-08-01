@@ -9,7 +9,7 @@ from oucnews.newsspider import NewsSpider
 class Spider(NewsSpider):
     """工程学院 党团委
 
-    此网站的内容页链接尾部有一些奇怪的东西
+    这个网站的内容页链接尾部有一些奇怪的东西
     只抓取了党团相关的栏目，与工程学院主站重复的栏目没有抓取
     栏目“文件下载”、“精彩瞬间”没有抓取
     """
