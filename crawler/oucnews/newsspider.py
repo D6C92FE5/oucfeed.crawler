@@ -23,7 +23,7 @@ class NewsSpider(BaseSpider):
     item_extract_scope = ""
     item_extract_field = {}
 
-    item_max_count = 3
+    item_max_count = 5
 
     datetime_format = ""
 
