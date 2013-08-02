@@ -6,7 +6,7 @@ import re
 from datetime import datetime
 from urlparse import urljoin
 
-from lxml.html import defs, make_links_absolute
+from lxml.html import defs, make_links_absolute, fragment_fromstring
 from lxml.html.clean import Cleaner
 from w3lib.url import safe_url_string
 
@@ -36,6 +36,11 @@ def clean_html(html, url=None):
     if url is not None:
         html = make_links_absolute(html, url)
     return html
+
+
+def clear_html_tags(html):
+    html = fragment_fromstring(html).text_content()
+    return html.strip()
 
 
 def extract_number(string, index):
