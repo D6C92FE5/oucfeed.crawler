@@ -39,11 +39,5 @@ class Spider(NewsSpider):
 
     item_max_count = 6 * 6 # 每个分类6个，总共6个分类，全部抓取
 
-    def generate_item_id(self, url):
-        if url.startswith("http://it.ouc.edu.cn/party/Article.aspx"):
-            return self.name + util.extract_number(url, -1)
-        else: # 链接到其他网站的条目
-            return self.name + url
-
     def process_category(self, category, response):
         return self.name

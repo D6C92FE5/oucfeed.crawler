@@ -53,8 +53,7 @@ class NewsSpider(BaseSpider):
         # 暂存含有部分信息的项目，在 parse_item 补充完整后再输出
         for value in zip(*fields.itervalues()):
             item = NewsItem(zip(fields.iterkeys(), value))
-            item['id_'] = self.generate_item_id(item['link'])
-            self.items[item['id_']] = item
+            self.items[item['link']] = item
 
         fields['link'] = self.process_followed_links(fields['link'], response)
 
@@ -70,8 +69,7 @@ class NewsSpider(BaseSpider):
         if self.item_extract_scope != "":
             hxs = hxs.select(self.item_extract_scope)
 
-        id_ = self.generate_item_id(response.url)
-        i = self.items[id_]
+        i = self.items[response.url]
         failed = []
         for k, v in self.item_extract_field.iteritems():
             selected = hxs.select(v).extract()
@@ -88,14 +86,8 @@ class NewsSpider(BaseSpider):
     def process_followed_links(self, links, response):
         return links
 
-    def generate_item_id(self, url):
-        return self.name + util.extract_number(url, -1)
-
     def process_item_field(self, field, value, response):
         return getattr(self, 'process_'+field)(value.strip(), response)
-
-    def process_id_(self, id_, response):
-        return id_
 
     def process_link(self, link, response):
         return util.normalize_url(link, response.url)

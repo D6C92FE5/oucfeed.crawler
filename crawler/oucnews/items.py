@@ -6,7 +6,6 @@ from scrapy.item import Item, Field
 
 
 class NewsItem(Item):
-    id_ = Field()
     link = Field()
     datetime = Field()
     category = Field()

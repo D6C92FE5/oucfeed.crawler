@@ -39,6 +39,3 @@ class Spider(NewsSpider):
     }
 
     datetime_format = "%Y-%m-%d"
-
-    def generate_item_id(self, url):
-        return self.name + util.extract_number(url, 1)

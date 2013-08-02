@@ -34,9 +34,6 @@ class Spider(NewsSpider):
 
     datetime_format = "%Y-%m-%d %H:%M:%S"
 
-    def generate_item_id(self, url):
-        return self.name + util.extract_number(url, -2)
-
     def process_datetime(self, datetime, response):
         l = datetime.index("时间：") + 3
         return super(Spider, self).process_datetime(datetime[l:], response)

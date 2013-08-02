@@ -47,18 +47,16 @@
             </ul>
             {{#data}}
             <ul>
-                <li><span class="name">ＩＤ: </span>{{id_}}</li>
+                <li><span class="name">链接: </span><a href="{{{link}}}" target="_blank">{{link}}</a></li>
                 <li><span class="name">分类: </span>{{category}}</li>
                 <li><span class="name">标题: </span>{{title}}</li>
                 <li><span class="name">日期: </span>{{datetime}}</li>
-                <li><span class="name">链接: </span><a href="{{{link}}}" target="_blank">{{link}}</a></li>
                 <li class="content">{{{content}}}</li>
             </ul>
             {{/data}}
         </div>
         <script>
-            function id2int(id) { return Number(/\d+$/.exec(id)) }
-            function compare(a,b) { return id2int(b.id_) - id2int(a.id_) }
+            function compare(a,b) { return b.datetime.localeCompare(a.datetime) }
             data.sort(compare)
 
             $list = document.getElementById("list")
