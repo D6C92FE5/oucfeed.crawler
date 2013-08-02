@@ -14,7 +14,6 @@ OUC SRDP #3735 的组成部分
 ====================
 
 * [Scrapy](http://scrapy.org/)
-* [readability](https://github.com/buriy/python-readability)
 
 
 许可证

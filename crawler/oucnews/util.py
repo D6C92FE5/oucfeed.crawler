@@ -6,7 +6,8 @@ import re
 from datetime import datetime
 from urlparse import urljoin
 
-import readability
+from lxml.html import defs, make_links_absolute
+from lxml.html.clean import Cleaner
 from w3lib.url import safe_url_string
 
 
@@ -25,11 +26,15 @@ def unwrap_html(html):
     return html[l+1:r]
 
 
+safe_attrs = defs.safe_attrs - {'class'}
+remove_tags = ['font', 'span']
+html_cleaner = Cleaner(style=True, page_structure=False,
+                       remove_tags=remove_tags, safe_attrs=safe_attrs)
+
 def clean_html(html, url=None):
-    try:
-        html = readability.Document(html, url=url).summary(True)
-    except Exception:
-        pass
+    html = html_cleaner.clean_html(html)
+    if url is not None:
+        html = make_links_absolute(html, url)
     return html
 
 
