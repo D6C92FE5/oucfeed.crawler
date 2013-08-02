@@ -26,7 +26,7 @@ def unwrap_html(html):
     return html[l+1:r]
 
 
-safe_attrs = defs.safe_attrs - {'class'}
+safe_attrs = defs.safe_attrs - {'class', 'align'}
 remove_tags = ['font', 'span']
 html_cleaner = Cleaner(style=True, page_structure=False,
                        remove_tags=remove_tags, safe_attrs=safe_attrs)
