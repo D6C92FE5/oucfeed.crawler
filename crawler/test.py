@@ -10,4 +10,4 @@ from scrapy.cmdline import execute
 
 if os.path.exists("test.js"):
     os.remove("test.js")
-execute("scrapy crawl 院系/信息 -o test.js -t js".split())
+execute("scrapy crawl 院系/材料 -o test.js -t js".split())
