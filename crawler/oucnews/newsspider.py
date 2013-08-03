@@ -43,12 +43,20 @@ class NewsSpider(BaseSpider):
             hxs = hxs.select(self.list_extract_scope)
 
         fields = {}
+        failed = []
         for k, v in self.list_extract_field.iteritems():
             selected = hxs.select(v).extract()
+            if len(selected) == 0:
+                failed.append(k)
+                continue
             selected = [self.process_item_field(k,x,response) for x in selected]
             if k != 'link':  # 数量取 link 的数量，其他项循环填充
                 selected = cycle(selected)
             fields[k] = selected
+        if failed:
+            log.msg("extract 0 item in {} ({})".format(response.url,
+                ", ".join(failed)), level=log.WARNING, spider=self)
+            return
 
         # 暂存含有部分信息的项目，在 parse_item 补充完整后再输出
         for value in zip(*fields.itervalues()):
