@@ -1,0 +1,17 @@
+application: oucfeed
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+
+- url: /oucfeed.js
+  static_files: oucfeed.js
+  upload: oucfeed\.js
+
+- url: .*
+  script: oucfeed.app

@@ -13,7 +13,13 @@ OUC SRDP #3735 的组成部分
 依赖
 ====================
 
+抓取端
+
 * [Scrapy](http://scrapy.org/)
+
+服务端
+
+* [CherryPy](http://www.cherrypy.org/)
 
 
 许可证
