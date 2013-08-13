@@ -61,6 +61,7 @@ class NewsSpider(BaseSpider):
         # 暂存含有部分信息的项目，在 parse_item 补充完整后再输出
         for value in zip(*fields.itervalues()):
             item = NewsItem(zip(fields.iterkeys(), value))
+            item['id'] = "/".join([self.name, item['link']])
             self.items[item['link']] = item
 
         fields['link'] = self.process_followed_links(fields['link'], response)
