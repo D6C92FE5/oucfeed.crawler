@@ -2,20 +2,29 @@
 
 from __future__ import division, print_function, unicode_literals
 
+from itertools import islice
+
 import cherrypy
 from cherrypy import request, response
 
-from oucfeed import db, category
+from oucfeed import db, category, profile
 
 
 class News(object):
 
     exposed = True
 
+    @cherrypy.tools.json_out()
+    def GET(self, id_, count=20):
+        profile = db.get_profile(id_)
+        news = islice(filtered_by_profile(profile), count)
+        return list(news)
+
     @cherrypy.tools.json_in()
+    @cherrypy.tools.json_out()
     def POST(self):
         add(request.json)
-        return ""
+        return {}
 
 
 def add(news_iter):
@@ -33,3 +42,10 @@ def add(news_iter):
     db.set_news(news[-1000:])
 
     category.add(x['category'] for x in news_new.itervalues())
+
+
+def filtered_by_profile(profile_):
+    for news in reversed(db.get_news()):
+        if profile.match(profile_, news['category']):
+            yield news
+

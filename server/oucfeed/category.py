@@ -17,9 +17,10 @@ class Category(object):
         return db.get_category()
 
     @cherrypy.tools.json_in()
+    @cherrypy.tools.json_out()
     def POST(self):
         db.set_category(request.json)
-        return ""
+        return {}
 
 
 def add(category_iter):
@@ -32,12 +33,3 @@ def add(category_iter):
             category_node = category_node[part]
     db.set_category(category_dict)
 
-
-def match(category_dict, category):
-    for part in category:
-        category_dict = category_dict.get(part)
-        if category_dict == {}:
-            return True
-        if not category_dict:
-            break
-    return bool(category_dict)

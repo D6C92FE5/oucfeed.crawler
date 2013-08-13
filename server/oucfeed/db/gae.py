@@ -9,7 +9,7 @@ __all__ = [
     "get_news", "set_news",
     "get_news_history", "set_news_history",
     "get_category", "set_category",
-    "get_profile", "get_profile",
+    "get_profile", "set_profile",
 ]
 
 

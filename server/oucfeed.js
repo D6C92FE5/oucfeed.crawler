@@ -22,10 +22,12 @@
                 contentType: 'application/json'
             })
         },
-        postNews: function (news) {
-            this.postJSON("news", news)
+        postNews: function (news, callback) {
+            this.postJSON("news", news, callback)
+        },
+        postProfile: function (profile, callback) {
+            this.postJSON("profile", profile, callback)
         }
-
     }
 
     window.oucfeed = oucfeed

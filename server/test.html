@@ -8,9 +8,11 @@
     <body>
         <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
         <script src="http://localhost:8080/oucfeed.js"></script>
-        <script src="../crawler/test.js"></script>
+        <script src="../server/test.js"></script>
         <script>
-            oucfeed.postNews(data)
+            oucfeed.postProfile(data, function (data) {
+                alert(data.id)
+            })
         </script>
     </body>
 </html>

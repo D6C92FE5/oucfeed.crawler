@@ -41,6 +41,7 @@ nosetests.xml
 # Test Output
 /crawler/test.json
 /crawler/test.js
+/server/test.js
 
 # site-packages for GAE
 /server/site-packages/*
