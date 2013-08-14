@@ -15,10 +15,9 @@ class News(object):
     exposed = True
 
     @cherrypy.tools.json_out()
-    def GET(self, id_, count=None):
+    def GET(self, id_='all', count=None):
         count = util.parse_output_count(count)
-        profile = db.get_profile(id_)
-        news = islice(filtered_by_profile(profile), count)
+        news = islice(filtered_by_profile(id_), count)
         return list(news)
 
     @cherrypy.tools.json_in()
@@ -45,8 +44,9 @@ def add(news_iter):
     category.add(x['category'] for x in news_new.itervalues())
 
 
-def filtered_by_profile(profile_):
+def filtered_by_profile(profile_id):
+    profile_ = db.get_profile(profile_id)
     for news in reversed(db.get_news()):
-        if profile.match(profile_, news['category']):
+        if profile_id == 'all' or profile.match(profile_, news['category']):
             yield news
 

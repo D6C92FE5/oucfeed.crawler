@@ -25,9 +25,9 @@ class Feed(object):
     def __init__(self, feed_type='rss'):
         self.generator = feed_generators[feed_type]
 
-    def GET(self, id_, count=None):
+    def GET(self, id_='all', count=None):
         count = util.parse_output_count(count)
-        profile = db.get_profile(id_)
+        news_ = news.filtered_by_profile(id_)
 
         feed = self.generator(
             title="OUC Feed",
@@ -36,7 +36,7 @@ class Feed(object):
             subtitle="中国海洋大学 订阅源",
             language="zh-CN",
         )
-        for item in islice(news.filtered_by_profile(profile), count):
+        for item in islice(news_, count):
             feed.add_item(
                 title="[{}]{}".format("/".join(item['category']), item['title']),
                 link=item['link'],
