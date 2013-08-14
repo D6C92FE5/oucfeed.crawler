@@ -20,6 +20,7 @@ OUC SRDP #3735 的组成部分
 服务端
 
 * [CherryPy](http://www.cherrypy.org/)
+* [WebHelpers](http://sluggo.scrapping.cc/python/WebHelpers/)
 
 
 许可证

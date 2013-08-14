@@ -7,7 +7,7 @@ from itertools import islice
 import cherrypy
 from cherrypy import request, response
 
-from oucfeed import db, category, profile
+from oucfeed import db, util, category, profile
 
 
 class News(object):
@@ -15,7 +15,8 @@ class News(object):
     exposed = True
 
     @cherrypy.tools.json_out()
-    def GET(self, id_, count=20):
+    def GET(self, id_, count=None):
+        count = util.parse_output_count(count)
         profile = db.get_profile(id_)
         news = islice(filtered_by_profile(profile), count)
         return list(news)

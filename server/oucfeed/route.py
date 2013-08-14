@@ -10,8 +10,8 @@ from oucfeed.root import Root
 from oucfeed.news import News
 from oucfeed.category import Category
 from oucfeed.profile import Profile
-from oucfeed.rss import Rss
-from oucfeed.atom import Atom
+from oucfeed.feed import Feed
+
 
 config = {
     '/': {
@@ -25,5 +25,5 @@ root = Root()
 root.news = News()
 root.category = Category()
 root.profile = Profile()
-root.rss = Rss()
-root.atom = Atom()
+root.rss = Feed('rss')
+root.atom = Feed('atom')
