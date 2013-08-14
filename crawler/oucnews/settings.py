@@ -18,3 +18,5 @@ FEED_EXPORTERS = {
     'json': 'oucnews.exporters.JsonItemExporter',
     'js': 'oucnews.exporters.JavascriptItemExporter',
 }
+
+FEED_SERVER = "http://localhost:8080/"
