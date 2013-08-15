@@ -32,9 +32,10 @@ html_cleaner = Cleaner(style=True, page_structure=False,
                        remove_tags=remove_tags, safe_attrs=safe_attrs)
 
 def clean_html(html, url=None):
-    html = html_cleaner.clean_html(html)
-    if url is not None:
-        html = make_links_absolute(html, url)
+    if html.strip():
+        html = html_cleaner.clean_html(html)
+        if url is not None:
+            html = make_links_absolute(html, url)
     return html
 
 
