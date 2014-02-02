@@ -10,20 +10,22 @@ OUC SRDP #3735 的组成部分
 **初期开发中**
 
 
+OUC Feed - Crawler
+====================
+
+中国海洋大学订阅源的抓取端
+
+抓取海大某些网站的文章，提取相应的信息推送到服务端
+
+
+
 依赖
 ====================
 
-抓取端
-
 * [Scrapy](http://scrapy.org/)
-
-服务端
-
-* [CherryPy](http://www.cherrypy.org/)
-* [WebHelpers](http://sluggo.scrapping.cc/python/WebHelpers/)
 
 
 许可证
 ====================
 
-oucfeed 在 MIT 许可证下发行
+oucfeed.crawler 在 MIT 许可证下发行
