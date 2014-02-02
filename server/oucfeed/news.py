@@ -2,6 +2,7 @@
 
 from __future__ import division, print_function, unicode_literals
 
+from collections import OrderedDict
 from itertools import islice
 
 import cherrypy
@@ -30,7 +31,10 @@ class News(object):
 def add(news_iter):
     history = db.get_news_history()
 
-    news_new = {x['id']: x for x in news_iter if x['id'] not in history}
+    news_new = OrderedDict()
+    for item in news_iter:
+        if item['id'] not in history:
+            news_new[item['id']] = item
     for news in news_new.itervalues():
         news['category'] = tuple(news['category'].split("/"))
 
