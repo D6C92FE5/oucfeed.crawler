@@ -6,14 +6,14 @@ from itertools import cycle
 
 from scrapy import log
 from scrapy.http import Request
-from scrapy.selector import HtmlXPathSelector
-from scrapy.spider import BaseSpider
+from scrapy.selector import Selector
+from scrapy.spider import Spider
 
 from oucfeed.crawler import util
 from oucfeed.crawler.items import NewsItem
 
 
-class NewsSpider(BaseSpider):
+class NewsSpider(Spider):
 
     start_urls = []
 
@@ -38,14 +38,14 @@ class NewsSpider(BaseSpider):
             response._encoding = self.force_response_encoding
             response._cached_ubody = None # 删除解码缓存
 
-        hxs = HtmlXPathSelector(response)
+        sel = Selector(response)
         if self.list_extract_scope != "":
-            hxs = hxs.select(self.list_extract_scope)
+            sel = sel.xpath(self.list_extract_scope)
 
         fields = {}
         failed = []
         for k, v in self.list_extract_field.iteritems():
-            selected = hxs.select(v).extract()
+            selected = sel.xpath(v).extract()
             if len(selected) == 0:
                 failed.append(k)
                 continue
@@ -74,14 +74,14 @@ class NewsSpider(BaseSpider):
             response._encoding = self.force_response_encoding
             response._cached_ubody = None # 删除解码缓存
 
-        hxs = HtmlXPathSelector(response)
+        sel = Selector(response)
         if self.item_extract_scope != "":
-            hxs = hxs.select(self.item_extract_scope)
+            sel = sel.xpath(self.item_extract_scope)
 
         i = self.items[response.url]
         failed = []
         for k, v in self.item_extract_field.iteritems():
-            selected = hxs.select(v).extract()
+            selected = sel.xpath(v).extract()
             if len(selected) > 0:
                 i[k] = self.process_item_field(k, selected[0], response)
             else:
