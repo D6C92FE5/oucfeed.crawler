@@ -57,7 +57,8 @@
             {{/data}}
         </div>
         <script>
-            function compare(a,b) { return b.datetime.localeCompare(a.datetime) }
+            function get_datetime(item) { return item.datetime || "" }
+            function compare(a,b) { return get_datetime(b).localeCompare(get_datetime(a)) }
             data.sort(compare)
 
             $list = document.getElementById("list")

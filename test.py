@@ -5,9 +5,9 @@ from __future__ import division, absolute_import, print_function, unicode_litera
 
 import os
 
-from scrapy.cmdline import execute
+from oucfeed.crawler.executor import run
 
 
 if os.path.exists("test.js"):
     os.remove("test.js")
-execute("scrapy crawl 院系/艺术 -o test.js -t js".split())
+run(["院系/艺术"])
