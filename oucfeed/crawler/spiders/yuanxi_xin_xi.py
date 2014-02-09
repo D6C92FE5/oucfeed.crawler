@@ -24,7 +24,7 @@ class Spider(NewsSpider):
     list_extract_scope = "//table[@class='right1_text_wzt']"
     list_extract_field = {
         'link': ".//@href",
-        'category': "text()", # 随便选取点东西，值直接有 process_catagory 确定
+        'category': "//text()", # 随便选取点东西，值直接有 process_catagory 确定
         'title': ".//@title",
     }
 

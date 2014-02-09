@@ -55,7 +55,7 @@ class Spider(NewsSpider):
 
     datetime_format = "%Y-%m-%d %H:%M:%S"
 
-    force_response_encoding = 'gb18030'
+    response_encoding = 'gb18030'
 
     def process_datetime(self, datetime, response):
         datetime = "20" + datetime[6:23]

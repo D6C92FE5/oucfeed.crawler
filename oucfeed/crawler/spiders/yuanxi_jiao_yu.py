@@ -20,27 +20,29 @@ class Spider(NewsSpider):
         "http://web.ouc.edu.cn/jyx/xwzx/list.htm",
     ]
 
-    list_extract_scope = "//div[@class='b articlelist2_tbl ']"
+    list_extract_scope = ".articlelist2_tbl"
     list_extract_field = {
-        'link': ".//@href",
-        'datetime': ".//td[@height='24']//td[2]/text()",
-        'category': "//span[@frag='窗口内容'][1]/text()",
-        'title': ".//a/text()",
+        'link': "a",
+        'datetime': "td td:nth-child(2)",
+        'category': "//div[@frag='窗口6']",
+        'title': ".//a//text()[last()]", # 链接里可能包含其他标签
     }
 
-    item_extract_scope = "//div[@frag='窗口内容']"
+    item_url_pattern = r"http://web\.ouc\.edu\.cn/jyx/.*/page\.htm"
+
+    item_extract_scope = ".vlink"
     item_extract_field = {
-        'datetime': ".//td[@height='31']/text()[1]",
-        'title': ".//td[@class='biaoti']/text()",
-        'content': ".//td[@class='article']",
+        'datetime': "[height='31']",
+        'title': ".biaoti",
+        'content': "td.article",
     }
 
     datetime_format = "%Y-%m-%d"
 
-    def process_link(self, link, response):
+    def process_link(self, link):
         return util.normalize_url(link, "http://web.ouc.edu.cn/jyx/")
 
-    def process_datetime(self, datetime, response):
+    def process_datetime(self, datetime):
         if len(datetime) > 10:
             datetime = datetime[5:15]
-        return super(Spider, self).process_datetime(datetime, response)
+        return super(Spider, self).process_datetime(datetime)

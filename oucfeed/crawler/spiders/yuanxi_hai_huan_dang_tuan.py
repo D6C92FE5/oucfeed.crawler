@@ -36,7 +36,7 @@ class Spider(NewsSpider):
 
     datetime_format = "%Y-%m-%d"
 
-    force_response_encoding = 'gb18030'
+    response_encoding = 'gb18030'
 
     def process_link(self, link, response):
         link = link.replace("ny.asp", "ny1.asp")
