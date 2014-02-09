@@ -16,7 +16,7 @@ class Spider(NewsSpider):
 
     name = "院系/继续"
 
-    start_urls = [
+    list_urls = [
         "http://web.ouc.edu.cn/jxjy/xydt/list.htm",
         "http://web.ouc.edu.cn/jxjy/tzgg/list.htm",
         "http://web.ouc.edu.cn/jxjy/xlzs/list.htm",
@@ -43,5 +43,5 @@ class Spider(NewsSpider):
 
     datetime_format = "%Y-%m-%d"
 
-    def process_link(self, link, response):
+    def process_link(self, link):
         return util.normalize_url(link, "http://web.ouc.edu.cn/jxjy/")

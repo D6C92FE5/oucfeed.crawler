@@ -15,7 +15,7 @@ class Spider(NewsSpider):
 
     name = "院系/国际"
 
-    start_urls = [
+    list_urls = [
         "http://www2.ouc.edu.cn/sie/news/WZXW/WZXW.html",
         "http://www2.ouc.edu.cn/sie/news/ZYHNDXM/ZYHNDXM.html",
         "http://www2.ouc.edu.cn/sie/news/JXDT/JXDT.html",
@@ -57,6 +57,6 @@ class Spider(NewsSpider):
 
     response_encoding = 'gb18030'
 
-    def process_datetime(self, datetime, response):
+    def process_datetime(self, datetime):
         datetime = "20" + datetime[6:23]
-        return super(Spider, self).process_datetime(datetime, response)
+        return super(Spider, self).process_datetime(datetime)

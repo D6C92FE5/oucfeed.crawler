@@ -15,7 +15,7 @@ class Spider(NewsSpider):
 
     name = "院系/食品"
 
-    start_urls = [
+    list_urls = [
         "http://www2.ouc.edu.cn/shipin/nylist.asp?id=6&lb1id=5",
         "http://www2.ouc.edu.cn/shipin/nylist.asp?id=6&lb1id=6",
         "http://www2.ouc.edu.cn/shipin/nylist.asp?id=6&lb1id=7",
@@ -41,5 +41,5 @@ class Spider(NewsSpider):
 
     datetime_format = "%Y-%m-%d"
 
-    def process_datetime(self, datetime, response):
-        return super(Spider, self).process_datetime(datetime[5:], response)
+    def process_datetime(self, datetime):
+        return super(Spider, self).process_datetime(datetime[5:])

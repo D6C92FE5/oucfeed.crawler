@@ -17,7 +17,7 @@ class Spider(NewsSpider):
 
     name = "院系/信息"
 
-    start_urls = [
+    list_urls = [
         "http://it.ouc.edu.cn/party/Default.aspx",
     ]
 
@@ -39,5 +39,5 @@ class Spider(NewsSpider):
 
     item_max_count = 6 * 6 # 每个分类6个，总共6个分类，全部抓取
 
-    def process_category(self, category, response):
+    def process_category(self, category):
         return self.name

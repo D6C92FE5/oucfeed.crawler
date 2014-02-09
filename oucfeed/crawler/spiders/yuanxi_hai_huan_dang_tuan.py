@@ -16,7 +16,7 @@ class Spider(NewsSpider):
 
     name = "院系/海环/党团"
 
-    start_urls = [
+    list_urls = [
         "http://www2.ouc.edu.cn/cpeo/dangtuan/news.asp?cId=0",
     ]
 
@@ -38,10 +38,10 @@ class Spider(NewsSpider):
 
     response_encoding = 'gb18030'
 
-    def process_link(self, link, response):
+    def process_link(self, link):
         link = link.replace("ny.asp", "ny1.asp")
-        return util.normalize_url(link, response.url)
+        return util.normalize_url(link, self.current_response.url)
 
-    def process_category(self, category, response):
+    def process_category(self, category):
         category = category[:-2]
-        return super(Spider, self).process_category(category, response)
+        return super(Spider, self).process_category(category)

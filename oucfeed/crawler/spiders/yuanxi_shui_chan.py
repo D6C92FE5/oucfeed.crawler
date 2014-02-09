@@ -15,7 +15,7 @@ class Spider(NewsSpider):
 
     name = "院系/水产"
 
-    start_urls = [
+    list_urls = [
         "http://www2.ouc.edu.cn/shuichan/Article_Class2.asp",
     ]
 
@@ -37,7 +37,7 @@ class Spider(NewsSpider):
 
     item_max_count = 6 * 20 # 每个分类6个，总共20个分类，全部抓取
 
-    def process_datetime(self, datetime, response):
+    def process_datetime(self, datetime):
         l = datetime.index("时间：") + 3
         r = datetime.index("    文章")
-        return super(Spider, self).process_datetime(datetime[l:r], response)
+        return super(Spider, self).process_datetime(datetime[l:r])

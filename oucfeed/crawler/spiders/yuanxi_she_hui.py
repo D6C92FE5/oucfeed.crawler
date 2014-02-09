@@ -14,7 +14,7 @@ class Spider(NewsSpider):
 
     name = "院系/社会"
 
-    start_urls = [
+    list_urls = [
         "http://www2.ouc.edu.cn/skb/list.asp?id=1",
         "http://www2.ouc.edu.cn/skb/list.asp?id=1",
         "http://www2.ouc.edu.cn/skb/list.asp?id=3",
@@ -42,7 +42,7 @@ class Spider(NewsSpider):
 
     datetime_format = "%Y-%m-%d"
 
-    def process_datetime(self, datetime, response):
+    def process_datetime(self, datetime):
         if len(datetime) > 10:
             datetime = datetime[4:14]
-        return super(Spider, self).process_datetime(datetime, response)
+        return super(Spider, self).process_datetime(datetime)

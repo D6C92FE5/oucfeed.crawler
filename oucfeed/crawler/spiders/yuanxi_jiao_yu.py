@@ -15,7 +15,7 @@ class Spider(NewsSpider):
 
     name = "院系/教育"
 
-    start_urls = [
+    list_urls = [
         "http://web.ouc.edu.cn/jyx/yxgg/list.htm",
         "http://web.ouc.edu.cn/jyx/xwzx/list.htm",
     ]

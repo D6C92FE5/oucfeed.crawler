@@ -17,7 +17,7 @@ class Spider(NewsSpider):
 
     name = "院系/体育"
 
-    start_urls = [
+    list_urls = [
         "http://www3.ouc.edu.cn/sport/index.htm",
     ]
 
@@ -37,12 +37,12 @@ class Spider(NewsSpider):
 
     datetime_format = "%Y-%m-%d"
 
-    def process_followed_links(self, links, response):
+    def process_followed_links(self, links):
         return [x for x in links if self.items[x]['title'] != ""]
 
-    def process_datetime(self, datetime, response):
-        return super(Spider, self).process_datetime(datetime[6:], response)
+    def process_datetime(self, datetime):
+        return super(Spider, self).process_datetime(datetime[6:])
 
-    def process_title(self, title, response):
+    def process_title(self, title):
         title = util.clear_html_tags(title)
         return title.strip(" >")

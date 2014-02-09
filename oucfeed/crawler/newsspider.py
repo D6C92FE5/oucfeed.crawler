@@ -18,7 +18,7 @@ class NewsSpider(Spider):
 
     domain = ""  # "" -> auto
 
-    start_urls = []
+    list_urls = []
 
     list_extract_scope = ""
     list_extract_field = {}
@@ -39,8 +39,8 @@ class NewsSpider(Spider):
         self.items = {}
         self.current_response = None
 
-        if not self.domain and self.start_urls:
-            self.domain = util.get_domain_from_url(self.start_urls[0])
+        if not self.domain and self.list_urls:
+            self.domain = util.get_domain_from_url(self.list_urls[0])
 
         self.list_extract_scope = self._to_xpath_if_css(self.list_extract_scope)
         self.list_extract_field = self._prepare_extract_field(self.list_extract_field)
@@ -50,7 +50,7 @@ class NewsSpider(Spider):
         self.item_url_pattern = re.compile(self.item_url_pattern)
 
     def start_requests(self):
-        for url in self.start_urls:
+        for url in self.list_urls:
             request = Request(url, callback=self.parse_list, dont_filter=True)
             request.meta['type'] = 'list'
             request.meta['spider'] = self

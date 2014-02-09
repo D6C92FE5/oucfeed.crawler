@@ -16,7 +16,7 @@ class Spider(NewsSpider):
 
     name = "院系/工程/党团"
 
-    start_urls = [
+    list_urls = [
         "http://www3.ouc.edu.cn/gongcheng/dangtuan/EG_DynamicsList.aspx?id=151&parentid=126",
         "http://www3.ouc.edu.cn/gongcheng/dangtuan/EG_DynamicsList.aspx?id=152&parentid=126",
         "http://www3.ouc.edu.cn/gongcheng/dangtuan/EG_DynamicsList.aspx?id=127&parentid=126",

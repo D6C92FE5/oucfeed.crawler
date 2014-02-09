@@ -11,7 +11,7 @@ class Spider(NewsSpider):
 
     name = "教务处"
 
-    start_urls = [
+    list_urls = [
         "http://jwc.ouc.edu.cn:8080/jwwz/index.jsp",
     ]
 
