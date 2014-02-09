@@ -6,8 +6,9 @@ from __future__ import division, absolute_import, print_function, unicode_litera
 import os
 
 from oucfeed.crawler.executor import run
+from oucfeed.crawler.websitespider import WebsiteSpider
 
 
 if os.path.exists("test.js"):
     os.remove("test.js")
-run(["院系/艺术"])
+run([WebsiteSpider])

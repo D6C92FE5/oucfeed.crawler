@@ -4,11 +4,13 @@ from __future__ import division, absolute_import, print_function, unicode_litera
 
 import re
 from datetime import datetime
-from urlparse import urljoin
+from urlparse import urljoin, urlsplit
+from inspect import isclass
 
 from lxml.html import defs, make_links_absolute, fragment_fromstring
 from lxml.html.clean import Cleaner
 from w3lib.url import safe_url_string
+from scrapy.selector.csstranslator import ScrapyHTMLTranslator
 
 
 def encode_if_unicode(string, encoding='utf-8'):
@@ -52,3 +54,18 @@ def normalize_url(url, base_url=None, encoding='utf-8'):
     if base_url:
         url = urljoin(base_url, url)
     return safe_url_string(url, encoding)
+
+
+def get_domain_from_url(url):
+    return urlsplit(url).hostname or ""
+
+
+def iterate_subclasses_in_module(module, base):
+    for obj in vars(module).itervalues():
+        if isclass(obj) and issubclass(obj, base) and obj.__module__ == module.__name__:
+            yield obj
+
+
+def css_to_xpath(css):
+    return _csstranslator.css_to_xpath(css)
+_csstranslator = ScrapyHTMLTranslator()
