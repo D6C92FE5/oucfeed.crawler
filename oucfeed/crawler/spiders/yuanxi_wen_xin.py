@@ -27,6 +27,8 @@ class Spider(NewsSpider):
         'title': ".//td//a[2]/text()",
     }
 
+    item_url_pattern = r"http://www2.ouc.edu.cn/wxxw/\w+/ShowArticle\.asp"
+
     item_extract_scope = "//table[@class='center_tdbgall'][1]"
     item_extract_field = {
         'datetime': "./tr[4]/td/text()[last()]",

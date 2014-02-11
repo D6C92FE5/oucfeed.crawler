@@ -37,6 +37,8 @@ class Spider(NewsSpider):
         'title': ".//a[@class='font1link']/@title",
     }
 
+    item_url_pattern = r"http://www2.ouc.edu.cn/jingji/\w+-ny\.asp"
+
     item_extract_scope = "//table[@width='95%']"
     item_extract_field = {
         'title': ".//strong//text()",

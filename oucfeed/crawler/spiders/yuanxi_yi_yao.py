@@ -34,6 +34,8 @@ class Spider(NewsSpider):
         'title': ".//a/text()",
     }
 
+    item_url_pattern = r"http://www2.ouc.edu.cn/yiyao/news\.asp"
+
     item_extract_scope = "//table[@width='630']"
     item_extract_field = {
         'title': ".//b[1]/text()",

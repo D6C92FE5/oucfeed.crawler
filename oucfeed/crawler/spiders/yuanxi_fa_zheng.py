@@ -35,6 +35,8 @@ class Spider(NewsSpider):
         'title': ".//a/text()",
     }
 
+    item_url_pattern = r"http://www3.ouc.edu.cn/fzxy/page(stu)?\.aspx"
+
     item_extract_scope = ""
     item_extract_field = {
         'datetime': "//span[contains(@id, 'Labeltime')]//text()",

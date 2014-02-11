@@ -28,7 +28,7 @@ class Spider(NewsSpider):
         'title': ".//a//text()[last()]", # 链接里可能包含其他标签
     }
 
-    item_url_pattern = r"http://web\.ouc\.edu\.cn/jyx/.*/page\.htm"
+    item_url_pattern = r"http://web.ouc.edu.cn/jyx/.*/page\.htm"
 
     item_extract_scope = ".vlink"
     item_extract_field = {

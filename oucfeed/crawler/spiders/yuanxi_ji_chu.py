@@ -34,6 +34,8 @@ class Spider(NewsSpider):
         'title': ".//td[@width='550']//a/text()",
     }
 
+    item_url_pattern = r"http://222.195.158.131/jcjxzx/\d+\.htm"
+
     item_extract_scope = "//table[@height='244']"
     item_extract_field = {
         'category': ".//td[@class='style1']//text()",

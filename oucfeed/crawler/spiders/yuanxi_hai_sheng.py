@@ -35,6 +35,8 @@ class Spider(NewsSpider):
         'title': ".//a/text()",
     }
 
+    item_url_pattern = r"http://www2.ouc.edu.cn/hysm/article\.asp"
+
     item_extract_scope = "//div[@id='product']"
     item_extract_field = {
         'datetime': ".//td[1]/text()[2]",

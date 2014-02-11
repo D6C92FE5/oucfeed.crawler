@@ -32,6 +32,8 @@ class Spider(NewsSpider):
         'title': ".//td/a/text()",
     }
 
+    item_url_pattern = r"http://www2.ouc.edu.cn/shipin/show\.asp"
+
     item_extract_scope = "//table[@width='796'][1]"
     item_extract_field = {
         'datetime': ".//td[@width='161']/text()",

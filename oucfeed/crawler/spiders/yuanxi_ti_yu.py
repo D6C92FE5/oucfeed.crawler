@@ -28,6 +28,8 @@ class Spider(NewsSpider):
         'title': "a ::text",
     }
 
+    item_url_pattern = r"http://www3.ouc.edu.cn/sport/new\d+\.html"
+
     item_extract_scope = "//td[@height='302']"
     item_extract_field = {
         'datetime': ".//div[@class='style11']/text()",

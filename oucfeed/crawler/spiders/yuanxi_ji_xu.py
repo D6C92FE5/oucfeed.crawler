@@ -34,6 +34,8 @@ class Spider(NewsSpider):
         'title': "a",
     }
 
+    item_url_pattern = r"http://web.ouc.edu.cn/jxjy/.*/page\.htm"
+
     item_extract_scope = "[frag='窗口2']"
     item_extract_field = {
         'datetime': ".biaoti12_red:nth-child(1)",

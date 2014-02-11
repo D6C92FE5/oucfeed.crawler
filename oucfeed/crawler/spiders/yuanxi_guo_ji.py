@@ -45,6 +45,8 @@ class Spider(NewsSpider):
         'title': ".//td[@width='93%']//a//text()[1]",
     }
 
+    item_url_pattern = r"http://www2.ouc.edu.cn/sie/news/\w+/\d+/\d+/\w+\.html?"
+
     item_extract_scope = "//table[@class='show']"
     item_extract_field = {
         'datetime': ".//td[2]/text()[1]",

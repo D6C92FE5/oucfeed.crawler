@@ -35,6 +35,8 @@ class Spider(NewsSpider):
         'title': ".//a/@title",
     }
 
+    item_url_pattern = r"http://www3.ouc.edu.cn/zyjs/news\.aspx"
+
     item_extract_scope = "//td[@width='684']"
     item_extract_field = {
         'title': ".//span[@id='Titel']/text()",

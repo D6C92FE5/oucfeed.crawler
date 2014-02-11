@@ -28,6 +28,8 @@ class Spider(NewsSpider):
         'title': ".//@title",
     }
 
+    item_url_pattern = r"http://it.ouc.edu.cn/party/Article\.aspx"
+
     item_extract_scope = "//table[@height='200px']"
     item_extract_field = {
         'datetime': ".//span[@id='labTime']//text()",

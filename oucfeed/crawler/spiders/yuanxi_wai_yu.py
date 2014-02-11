@@ -30,6 +30,8 @@ class Spider(NewsSpider):
         'title': ".//a/text()",
     }
 
+    item_url_pattern = r"http://222.195.158.203/index.aspx.*type=articleinfo"
+
     item_extract_scope = "//div[@class='uc_lanmu_content']"
     item_extract_field = {
         'datetime': ".//div[@class='articleinfor_tishi']/text()[1]",

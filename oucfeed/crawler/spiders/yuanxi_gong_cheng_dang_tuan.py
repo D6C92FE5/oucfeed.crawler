@@ -31,6 +31,8 @@ class Spider(NewsSpider):
         'title': ".//a/text()",
     }
 
+    item_url_pattern = r"http://www3.ouc.edu.cn/gongcheng/dangtuan/EG_DynamicsContent\.aspx"
+
     item_extract_scope = "//div[@class='nyzi']"
     item_extract_field = {
         'category': "//div[@class='nybtnright']/text()",

@@ -28,6 +28,8 @@ class Spider(NewsSpider):
         'title': ".//a[@class='font1link']/@title",
     }
 
+    item_url_pattern = r"http://www2.ouc.edu.cn/cpeo/news-ny\.asp"
+
     item_extract_scope = "//td[@width='77%']/table"
     item_extract_field = {
         'category': ".//strong[1]//text()",

@@ -22,6 +22,8 @@ class Spider(NewsSpider):
         'title': ".//td[@width='65%']//text()",
     }
 
+    item_url_pattern = r"http://jwc.ouc.edu.cn:8080/jwwz/news\.jsp"
+
     item_extract_scope = "//td[@class='td7']"
     item_extract_field = {
         'datetime': ".//font[last()-1]/text()",

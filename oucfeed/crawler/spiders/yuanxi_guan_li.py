@@ -36,6 +36,8 @@ class Spider(NewsSpider):
         'title': ".//a/text()",
     }
 
+    item_url_pattern = r"http://www2.ouc.edu.cn/glxy/Article/[\w/]+/\d+/\d+\.html"
+
     item_extract_scope = ""
     item_extract_field = {
         'title': "//td[@id='content-tittle']/text()",

@@ -28,6 +28,8 @@ class Spider(NewsSpider):
         'title': ".//a/text()",
     }
 
+    item_url_pattern = r"http://www2.ouc.edu.cn/chem/ShowArticle\.asp"
+
     item_extract_scope = "//table[@cellpadding='2']"
     item_extract_field = {
         'category': "//td[@width='590']/a[3]/text()",

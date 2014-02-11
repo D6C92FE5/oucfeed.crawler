@@ -32,6 +32,8 @@ class Spider(NewsSpider):
         'title': ".//a/text()",
     }
 
+    item_url_pattern = r"http://www2.ouc.edu.cn/skb/show\.asp"
+
     item_extract_scope = "//div[@id='printBody']"
     item_extract_field = {
         'datetime': "./div[2]//text()",

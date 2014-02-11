@@ -25,7 +25,7 @@ class NewsSpider(Spider):
 
     item_max_count = 5
 
-    item_url_pattern = r""
+    item_url_pattern = r"^$"
 
     item_extract_scope = ""
     item_extract_field = {}

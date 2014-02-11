@@ -25,6 +25,8 @@ class Spider(NewsSpider):
         'title': ".//a/text()",
     }
 
+    item_url_pattern = r"http://www2.ouc.edu.cn/shuichan/Article_Show\.asp"
+
     item_extract_scope = "//table[@width='930']"
     item_extract_field = {
         'datetime': ".//td[@height='14']/text()[last()]", #last() 中间可能有链接

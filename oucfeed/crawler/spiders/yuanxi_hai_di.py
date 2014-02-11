@@ -25,6 +25,8 @@ class Spider(NewsSpider):
         'title': ".//@title",
     }
 
+    item_url_pattern = r"http://211.64.142.77/[\w/]+/\d+-\d+-\d+/\d+\.html"
+
     item_extract_scope = "//table[@class='box']"
     item_extract_field = {
         'datetime': ".info_text div",
