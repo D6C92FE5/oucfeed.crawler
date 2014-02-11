@@ -27,13 +27,13 @@ class Spider(NewsSpider):
 
     item_extract_scope = "//table[@class='box']"
     item_extract_field = {
-        'datetime': ".//td[@class='info_text']//text()",
+        'datetime': ".info_text div",
         'category': "//td[@class='font13']/a[2]/text()",
         'title': ".//h2/text()",
         'content': ".//div[@align='left']",
     }
 
-    item_max_count = 8 + NewsSpider.item_max_count # 抓取“通知公告”中全部内容
+    item_max_count = 8 + NewsSpider.item_max_count  # 抓取“通知公告”中全部内容
 
     datetime_format = "%Y-%m-%d %H:%M:%S"
 

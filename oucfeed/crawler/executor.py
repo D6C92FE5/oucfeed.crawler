@@ -14,7 +14,7 @@ from oucfeed.crawler import settings, datastore
 from oucfeed.crawler.uploader import upload
 
 
-log.start()
+log.start(loglevel=settings.LOG_LEVEL)
 crawler_settings = CrawlerSettings(settings)
 spidermanager = SpiderManager.from_settings(crawler_settings)
 
@@ -34,7 +34,7 @@ def init_spider(spider):
 
 def init_spiders(spiders):
     if not spiders:
-        spiders = spidermanager.list()[1:3]
+        spiders = spidermanager.list()
     spiders = map(init_spider, spiders)
     return spiders
 

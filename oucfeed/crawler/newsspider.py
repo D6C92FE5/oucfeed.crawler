@@ -61,6 +61,9 @@ class NewsSpider(Spider):
         self._set_encoding_if_force()
 
         extracted = dict(self._extract_fields(self.list_extract_scope, self.list_extract_field))
+        if 'link' not in extracted:
+            return
+
         for field, values in extracted.iteritems():
             if field != 'link':
                 extracted[field] = cycle(values)
@@ -113,11 +116,10 @@ class NewsSpider(Spider):
         return selector
 
     def _smart_selector(self, selector, field):
-        if field == 'link':
-            if not ('@href' in selector or 'text()' in selector):
+        if not ('/@' in selector or 'text()' in selector):
+            if field == 'link':
                 selector += '/@href'
-        elif field != 'content':
-            if not 'text()' in selector:
+            elif field != 'content':
                 selector += '/text()'
         return selector
 
@@ -143,7 +145,7 @@ class NewsSpider(Spider):
             else:
                 faileds.append(field)
         if faileds:
-            log.msg("extract failed in {}({})".format(response.url, ", ".join(faileds)),
+            log.msg("extract failed in {} ({})".format(response.url, ", ".join(faileds)),
                     level=log.WARNING, spider=self._original_spider)
 
     @property

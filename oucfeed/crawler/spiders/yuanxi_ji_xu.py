@@ -26,19 +26,19 @@ class Spider(NewsSpider):
         "http://web.ouc.edu.cn/jxjy/zyxz/list.htm",
     ]
 
-    list_extract_scope = "//ul[@id='tpl_w33']"
+    list_extract_scope = "#tpl_w33"
     list_extract_field = {
-        'link': ".//@href",
+        'link': "a",
         #'datetime': ".//div/text()[last()] | .//span[@class=' articlelist1_issuetime ']/text()",
-        'category': "//span[@frag='窗口内容'][1]/text()",
-        'title': ".//a/text()",
+        'category': "//div[@frag='窗口32']",
+        'title': "a",
     }
 
-    item_extract_scope = "//div[@frag='窗口内容']"
+    item_extract_scope = "[frag='窗口2']"
     item_extract_field = {
-        'datetime': ".//span[@class='biaoti12_red'][1]/text()",
-        'title': ".//td[@class='biaoti']/text()",
-        'content': ".//td[@class='article']",
+        'datetime': ".biaoti12_red:nth-child(1)",
+        'title': ".biaoti",
+        'content': "td.article",
     }
 
     datetime_format = "%Y-%m-%d"

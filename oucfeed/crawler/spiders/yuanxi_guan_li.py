@@ -2,6 +2,9 @@
 
 from __future__ import division, absolute_import, print_function, unicode_literals
 
+from scrapy.http import Request
+from scrapy.selector import Selector
+
 from oucfeed.crawler import util
 from oucfeed.crawler.newsspider import NewsSpider
 
@@ -40,3 +43,15 @@ class Spider(NewsSpider):
     }
 
     datetime_format = "%Y-%m-%d %H:%M:%S"
+
+    def parse_item(self, response):
+        sel = Selector(response)
+        if self.can_parse_response(response) and not sel.xpath('//body'):
+            url = sel.xpath("//script[2]/text()").extract()[0][22:-2]
+            request = Request(url, callback=self.parse_item, dont_filter=True)
+            request.meta['type'] = 'item'
+            request.meta['spider'] = self._original_spider
+            request.meta['item'] = response.meta.get('item', None)
+            return request
+        else:
+            return super(Spider, self).parse_item(response)

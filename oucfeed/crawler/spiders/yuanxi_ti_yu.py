@@ -21,28 +21,27 @@ class Spider(NewsSpider):
         "http://www3.ouc.edu.cn/sport/index.htm",
     ]
 
-    list_extract_scope = "//table[@height='273']"
+    list_extract_scope = "#Layer7"
     list_extract_field = {
-        'link': ".//@href",
+        'link': "a",
         'category': ".//td[@height='35']//text()",
-        'title': ".//a",
+        'title': "a ::text",
     }
 
     item_extract_scope = "//td[@height='302']"
     item_extract_field = {
         'datetime': ".//div[@class='style11']/text()",
-        'title': ".//div[@class='style10']",
+        #'title': ".//div[@class='style10']",  # 里面可能会套着其他标签，不从这里提取了
         'content': "./table/tr[last()]/td[last()]",
     }
 
     datetime_format = "%Y-%m-%d"
 
-    def process_followed_links(self, links):
-        return [x for x in links if self.items[x]['title'] != ""]
-
     def process_datetime(self, datetime):
         return super(Spider, self).process_datetime(datetime[6:])
 
     def process_title(self, title):
-        title = util.clear_html_tags(title)
         return title.strip(" >")
+
+    def process_item(self, item):
+        return item if item['title'] else None
