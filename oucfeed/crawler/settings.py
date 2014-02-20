@@ -8,7 +8,7 @@ BOT_NAME = 'oucfeed.crawler'
 SPIDER_MODULES = ['oucfeed.crawler.spiders']
 NEWSPIDER_MODULE = 'oucfeed.crawler.spiders'
 
-LOG_LEVEL = 'WARNING'
+LOG_LEVEL = 'INFO'
 
 DOWNLOAD_TIMEOUT = 30
 

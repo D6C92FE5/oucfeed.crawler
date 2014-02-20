@@ -48,7 +48,7 @@ def start_crawler(spider):
 def crawl_finished(result):
     news = datastore.get_all()
     log.msg("抓取完成，得到 {} 项".format(len(news)), level=log.INFO)
-    upload(news)
+    #upload(news)
 
 
 def run(spiders=list()):

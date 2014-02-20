@@ -118,9 +118,9 @@ class NewsSpider(Spider):
     def _smart_selector(self, selector, field):
         if not ('/@' in selector or 'text()' in selector):
             if field == 'link':
-                selector += '/@href'
+                selector = '({})/@href'.format(selector)
             elif field != 'content':
-                selector += '/text()'
+                selector = '({})/text()'.format(selector)
         return selector
 
     def _prepare_extract_field(self, extract_field):
