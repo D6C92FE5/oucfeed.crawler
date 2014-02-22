@@ -10,4 +10,4 @@ from oucfeed.crawler.executor import run
 
 if os.path.exists("test.js"):
     os.remove("test.js")
-run(["党委研究生工作部"])
+run(["海大主页"])
