@@ -75,19 +75,29 @@ class NewsSpider(Spider):
 
         # 返回 request
         for item in islice(items, self.item_max_count):
-            request = Request(item['link'], callback=self.parse_item, dont_filter=True)
-            request.meta['type'] = 'item'
-            request.meta['spider'] = self._original_spider
-            request.meta['item'] = item
-            yield request
+            url = item['link']
+
+            if self.can_parse_item_of_url(url):
+                callback = self.parse_item
+            else:  # 链接到了其他网站，转交给对应的 Spider 提取
+                callback = self._get_parser_for_item_url(url)
+
+            if callback:
+                request = Request(item['link'], callback=self.parse_item, dont_filter=True)
+                request.meta['type'] = 'item'
+                request.meta['spider'] = self._original_spider
+                request.meta['item'] = item
+                yield request
+            else:  # 没有对应的提取方法时，把目标 URL 作为文章内容
+                item['content'] = self._genrate_default_content(url)
+                yield item
 
     def parse_item(self, response):
-        if self.can_parse_response(response):
+        item = response.meta['item'] or NewsItem()
+        if self.can_parse_item_of_url(response.url):
 
             self.current_response = response
             self._set_encoding_if_force()
-
-            item = response.meta['item'] or NewsItem()
 
             extracted = self._extract_fields(self.item_extract_scope, self.item_extract_field)
             for field, values in extracted:
@@ -99,16 +109,15 @@ class NewsSpider(Spider):
 
             yield item
 
-        else:  # 链接到了其他网站，转交给对应的 Spider 提取
+        else:  # 重新定向到了其他网站，转交给对应的 Spider 提取
 
-            from oucfeed.crawler.spiders import get_spider_for_response  # 回避循环引用
-            spider = get_spider_for_response(response)
-            if spider:
-                for item in spider.parse_item(response):
+            parser = self._get_parser_for_item_url(response.url)
+            if parser:
+                for item in parser(response):
                     yield item
             else:
-                log.msg("can't find corresponding Spider to URL {}".format(response.url),
-                        level=log.WARNING, spider=self._original_spider)
+                item['content'] = self._genrate_default_content(response.url)
+                yield item
 
     def _to_xpath_if_css(self, selector):
         if selector and not (selector.startswith("/") or selector.startswith("./")):
@@ -148,6 +157,17 @@ class NewsSpider(Spider):
             log.msg("extract failed in {} ({})".format(response.url, ", ".join(faileds)),
                     level=log.WARNING, spider=self._original_spider)
 
+    def _get_parser_for_item_url(self, item_url):
+        from oucfeed.crawler.spiders import get_spider_for_item_url  # 回避循环引用
+        spider = get_spider_for_item_url(item_url)
+        if not spider:
+            log.msg("can't find corresponding Spider to URL {}".format(item_url),
+                    level=log.WARNING, spider=self._original_spider)
+        return spider.parse_item if spider else None
+
+    def _genrate_default_content(self, item_url):
+        return "<a href='{0}' target='_blank'>{0}</a>".format(item_url)
+
     @property
     def _original_spider(self):
         return self.current_response.meta['spider'] if self.current_response else self
@@ -161,8 +181,8 @@ class NewsSpider(Spider):
     def generate_id(self, item):
         return "/".join([self._original_spider.name, item['link']])
 
-    def can_parse_response(self, response):
-        return self.item_url_pattern.match(response.url) is not None
+    def can_parse_item_of_url(self, item_url):
+        return self.item_url_pattern.match(item_url) is not None
 
     # 通常可能被重载的方法们 ↓
 

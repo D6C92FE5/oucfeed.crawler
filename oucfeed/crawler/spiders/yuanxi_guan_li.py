@@ -48,7 +48,7 @@ class Spider(NewsSpider):
 
     def parse_item(self, response):
         sel = Selector(response)
-        if self.can_parse_response(response) and not sel.xpath('//body'):
+        if self.can_parse_item_of_url(response.url) and not sel.xpath('//body'):
             url = sel.xpath("//script[2]/text()").extract()[0][22:-2]
             request = Request(url, callback=self.parse_item, dont_filter=True)
             request.meta['type'] = 'item'

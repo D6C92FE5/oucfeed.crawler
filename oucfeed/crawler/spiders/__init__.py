@@ -19,9 +19,9 @@ def iterate_all_newsspiders():
 newsspiders = [Spider() for Spider in iterate_all_newsspiders()]
 
 
-def get_spider_for_response(response):
-    spiders = _newsspider_domains.get(util.get_domain_from_url(response.url), [])
-    targets = (x for x in spiders if x.can_parse_response(response))
+def get_spider_for_item_url(item_url):
+    spiders = _newsspider_domains.get(util.get_domain_from_url(item_url), [])
+    targets = (x for x in spiders if x.can_parse_item_of_url(item_url))
     return next(targets, None)
 
 _newsspider_domains = defaultdict(list)
