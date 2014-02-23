@@ -68,4 +68,3 @@ def iterate_subclasses_in_module(module, base):
 def css_to_xpath(css):
     return _csstranslator.css_to_xpath(css)
 _csstranslator = ScrapyHTMLTranslator()
-

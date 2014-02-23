@@ -10,7 +10,7 @@ from scrapy.settings import CrawlerSettings
 from scrapy.crawler import Crawler
 from scrapy.spidermanager import SpiderManager
 
-from oucfeed.crawler import settings, datastore
+from oucfeed.crawler import settings, datastore, history
 from oucfeed.crawler.uploader import upload
 
 
@@ -53,6 +53,8 @@ def crawl_finished(result):
 
 def run(spiders=list()):
 
+    history.load()
+
     setup_output()  # FIXME
 
     spiders = init_spiders(spiders)
@@ -60,6 +62,7 @@ def run(spiders=list()):
 
     d = defer.DeferredList(crawlers)
     d.addCallback(crawl_finished)
+    d.addCallback(lambda result: history.dump())
     d.addErrback(lambda result: log.err())
     d.addBoth(lambda result: reactor.stop())
 

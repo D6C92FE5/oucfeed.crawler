@@ -16,6 +16,7 @@ USER_AGENT = 'oucfeed.crawler/test (https://github.com/D6C92FE5/oucfeed)'
 
 ITEM_PIPELINES = {
     'oucfeed.crawler.datastore.DatastorePipeline': 1000,
+    'oucfeed.crawler.history.HistoryPipeline': 1000,
 }
 
 FEED_EXPORTERS = {

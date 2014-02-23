@@ -12,7 +12,7 @@ from scrapy.http import Request
 from scrapy.selector import Selector
 from scrapy.spider import Spider
 
-from oucfeed.crawler import util
+from oucfeed.crawler import util, history
 from oucfeed.crawler.items import NewsItem
 
 
@@ -69,6 +69,7 @@ class NewsSpider(Spider):
                 extracted[field] = cycle(values)
         items = (NewsItem(zip(extracted.iterkeys(), values))
                  for values in zip(*extracted.itervalues()))
+        items = (x for x in items if not history.contains(self.generate_id(x)))
         items = self.process_items(items)
 
         # 返回 request
@@ -183,8 +184,8 @@ class NewsSpider(Spider):
     def generate_id(self, item):
         url = item['link']
         digest = hashlib.md5(url).digest()
-        digest = base64.b64encode(digest, b"__").decode()
-        return "-".join([self._original_spider.name, digest[:16]])
+        digest = base64.b64encode(digest, b"--").decode()
+        return "/".join([self._original_spider.name, digest[:12]])
 
     def can_parse_item_of_url(self, item_url):
         return self.item_url_pattern.match(item_url) is not None
