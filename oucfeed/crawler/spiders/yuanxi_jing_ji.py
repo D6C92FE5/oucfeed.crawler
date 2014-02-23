@@ -22,7 +22,7 @@ class Spider(NewsSpider):
         "http://www2.ouc.edu.cn/jingji/dangtuan.asp?itemId=5&cId=5",
         "http://www2.ouc.edu.cn/jingji/jiaoyu.asp?itemId=6&cId=6",
         "http://www2.ouc.edu.cn/jingji/jiaoyu.asp?itemId=7&cId=7",
-        "http://www2.ouc.edu.cn/jingji/jiaoyu.asp?itemId=26&cId=26",
+        #"http://www2.ouc.edu.cn/jingji/jiaoyu.asp?itemId=26&cId=26",
         "http://www2.ouc.edu.cn/jingji/jiaoyu.asp?itemId=27&cId=27",
         "http://www2.ouc.edu.cn/jingji/news.asp?itemId=32&cId=32",
         "http://www2.ouc.edu.cn/jingji/news.asp?itemId=36&cId=36",

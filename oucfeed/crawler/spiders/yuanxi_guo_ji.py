@@ -32,9 +32,9 @@ class Spider(NewsSpider):
         "http://www2.ouc.edu.cn/sie/news/XZFC/XZFC.html",
         "http://www2.ouc.edu.cn/sie/news/ZSDT/ZSDT.html",
         "http://www2.ouc.edu.cn/sie/news/BMLC/BMLC.html",
-        "http://www2.ouc.edu.cn/sie/news/HZYX/HZYX.html",
+        #"http://www2.ouc.edu.cn/sie/news/HZYX/HZYX.html",
         "http://www2.ouc.edu.cn/sie/news/TPZS/TPZS.html",
-        "http://www2.ouc.edu.cn/sie/news/SPZS/SPZS.html",
+        #"http://www2.ouc.edu.cn/sie/news/SPZS/SPZS.html",
         "http://www2.ouc.edu.cn/sie/news/LXWM/LXWM.html",
     ]
 

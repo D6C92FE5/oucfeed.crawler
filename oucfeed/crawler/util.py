@@ -28,17 +28,16 @@ def unwrap_html(html):
     return html[l+1:r]
 
 
-safe_attrs = defs.safe_attrs - {'class', 'align'}
-remove_tags = ['font', 'span']
-html_cleaner = Cleaner(style=True, page_structure=False,
-                       remove_tags=remove_tags, safe_attrs=safe_attrs)
-
 def clean_html(html, url=None):
     if html.strip():
         html = html_cleaner.clean_html(html)
         if url is not None:
             html = make_links_absolute(html, url)
     return html
+safe_attrs = defs.safe_attrs - {'class', 'align'}
+remove_tags = ['font', 'span']
+html_cleaner = Cleaner(style=True, page_structure=False,
+                       remove_tags=remove_tags, safe_attrs=safe_attrs)
 
 
 def clear_html_tags(html):
@@ -69,3 +68,4 @@ def iterate_subclasses_in_module(module, base):
 def css_to_xpath(css):
     return _csstranslator.css_to_xpath(css)
 _csstranslator = ScrapyHTMLTranslator()
+

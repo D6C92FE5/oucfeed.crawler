@@ -24,7 +24,6 @@ class Spider(NewsSpider):
     list_extract_scope = "//table[@class='right1_text_wzt']"
     list_extract_field = {
         'link': ".//@href",
-        'category': "//text()", # 随便选取点东西，值直接有 process_catagory 确定
         'title': ".//@title",
     }
 
@@ -40,6 +39,3 @@ class Spider(NewsSpider):
     datetime_format = "%Y/%m/%d %H:%M:%S"
 
     item_max_count = 6 * 6 # 每个分类6个，总共6个分类，全部抓取
-
-    def process_category(self, category):
-        return self.name

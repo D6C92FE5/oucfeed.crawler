@@ -3,6 +3,8 @@
 from __future__ import division, absolute_import, print_function, unicode_literals
 
 import re
+import hashlib
+import base64
 from itertools import cycle, islice
 
 from scrapy import log
@@ -36,7 +38,6 @@ class NewsSpider(Spider):
 
     def __init__(self, *a, **kw):
         super(NewsSpider, self).__init__(*a, **kw)
-        self.items = {}
         self.current_response = None
 
         if not self.domain and self.list_urls:
@@ -63,14 +64,11 @@ class NewsSpider(Spider):
         extracted = dict(self._extract_fields(self.list_extract_scope, self.list_extract_field))
         if 'link' not in extracted:
             return
-
         for field, values in extracted.iteritems():
             if field != 'link':
                 extracted[field] = cycle(values)
-
         items = (NewsItem(zip(extracted.iterkeys(), values))
                  for values in zip(*extracted.itervalues()))
-
         items = self.process_items(items)
 
         # 返回 request
@@ -79,33 +77,34 @@ class NewsSpider(Spider):
 
             if self.can_parse_item_of_url(url):
                 callback = self.parse_item
-            else:  # 链接到了其他网站，转交给对应的 Spider 提取
+            else:  # 链接到了其他网站，由对应的 Spider 提取
                 callback = self._get_parser_for_item_url(url)
 
             if callback:
-                request = Request(item['link'], callback=self.parse_item, dont_filter=True)
+                request = Request(url, callback=callback, dont_filter=True)
                 request.meta['type'] = 'item'
                 request.meta['spider'] = self._original_spider
                 request.meta['item'] = item
                 yield request
             else:  # 没有对应的提取方法时，把目标 URL 作为文章内容
-                item['content'] = self._genrate_default_content(url)
+                self._complete_item(item)
                 yield item
 
     def parse_item(self, response):
-        item = response.meta['item'] or NewsItem()
         if self.can_parse_item_of_url(response.url):
 
             self.current_response = response
             self._set_encoding_if_force()
+
+            item = response.meta['item']
 
             extracted = self._extract_fields(self.item_extract_scope, self.item_extract_field)
             for field, values in extracted:
                 if not (field == 'category' and 'category' in item):  # category 字段列表值优先
                     item[field] = values[0]
 
-            item['id'] = self.generate_id(item)
             item = self.process_item(item)
+            self._complete_item(item)
 
             yield item
 
@@ -116,8 +115,13 @@ class NewsSpider(Spider):
                 for item in parser(response):
                     yield item
             else:
-                item['content'] = self._genrate_default_content(response.url)
+                item = response.meta['item']
+                self._complete_item(item)
                 yield item
+
+    @property
+    def _original_spider(self):
+        return self.current_response.meta['spider'] if self.current_response else self
 
     def _to_xpath_if_css(self, selector):
         if selector and not (selector.startswith("/") or selector.startswith("./")):
@@ -149,7 +153,7 @@ class NewsSpider(Spider):
         for field, selector in field_selectors.iteritems():
             values = scope.xpath(selector).extract()
             if len(values) > 0:
-                values = [self.process_field(field, x) for x in values]
+                values = [self._process_field(field, x) for x in values]
                 yield field, values
             else:
                 faileds.append(field)
@@ -165,21 +169,22 @@ class NewsSpider(Spider):
                     level=log.WARNING, spider=self._original_spider)
         return spider.parse_item if spider else None
 
-    def _genrate_default_content(self, item_url):
-        return "<a href='{0}' target='_blank'>{0}</a>".format(item_url)
+    def _complete_item(self, item):
+        item.setdefault('id', self.generate_id(item))
+        item.setdefault('category', self._original_spider.name)
+        item.setdefault('content', "<a href='{0}' target='_blank'>{0}</a>".format(item['link']))
 
-    @property
-    def _original_spider(self):
-        return self.current_response.meta['spider'] if self.current_response else self
-
-    def process_field(self, field, value):
+    def _process_field(self, field, value):
         return getattr(self, 'process_' + field)(value.strip())
 
     def process_items(self, items):
         return filter(None, (self.process_item(x) for x in items))
 
     def generate_id(self, item):
-        return "/".join([self._original_spider.name, item['link']])
+        url = item['link']
+        digest = hashlib.md5(url).digest()
+        digest = base64.b64encode(digest, b"__").decode()
+        return "-".join([self._original_spider.name, digest[:16]])
 
     def can_parse_item_of_url(self, item_url):
         return self.item_url_pattern.match(item_url) is not None
