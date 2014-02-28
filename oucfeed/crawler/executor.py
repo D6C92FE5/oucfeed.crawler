@@ -14,8 +14,8 @@ from oucfeed.crawler import settings, datastore, history
 from oucfeed.crawler.uploader import upload
 
 
-log.start(loglevel=settings.LOG_LEVEL)
 crawler_settings = CrawlerSettings(settings)
+log.start_from_settings(crawler_settings)
 spidermanager = SpiderManager.from_settings(crawler_settings)
 
 
@@ -48,22 +48,25 @@ def start_crawler(spider):
 def crawl_finished(result):
     news = datastore.get_all()
     log.msg("抓取完成，得到 {} 项".format(len(news)), level=log.INFO)
-    #upload(news)
+    if upload(news):
+        history.dump()
+        datastore.clear()
+
+
+def crawl(spiders):
+    deferreds = list(map(start_crawler, init_spiders(spiders)))
+    d = defer.DeferredList(deferreds)
+    d.addCallback(crawl_finished)
+    d.addErrback(lambda result: log.err())
+    d.addBoth(lambda result: reactor.callLater(settings.EXECUTE_INTERVAL, crawl, spiders))
 
 
 def run(spiders=list()):
-
     history.load()
 
-    setup_output()  # FIXME
+    if len(spiders) == 1:  # FIXME: Feed exporter 在多个 Spider 同时运行时会把输出混在一起
+        setup_output()
 
-    spiders = init_spiders(spiders)
-    crawlers = [start_crawler(x) for x in spiders]
-
-    d = defer.DeferredList(crawlers)
-    d.addCallback(crawl_finished)
-    d.addCallback(lambda result: history.dump())
-    d.addErrback(lambda result: log.err())
-    d.addBoth(lambda result: reactor.stop())
+    crawl(spiders)
 
     reactor.run()

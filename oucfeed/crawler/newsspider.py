@@ -67,13 +67,15 @@ class NewsSpider(Spider):
         for field, values in extracted.iteritems():
             if field != 'link':
                 extracted[field] = cycle(values)
+
         items = (NewsItem(zip(extracted.iterkeys(), values))
                  for values in zip(*extracted.itervalues()))
-        items = (x for x in items if not history.contains(self.generate_id(x)))
         items = self.process_items(items)
+        items = islice(items, self.item_max_count)
+        items = (x for x in items if not history.contains(self.generate_id(x)))
 
         # 返回 request
-        for item in islice(items, self.item_max_count):
+        for item in items:
             url = item['link']
 
             if self.can_parse_item_of_url(url):

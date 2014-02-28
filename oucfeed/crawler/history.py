@@ -28,9 +28,11 @@ def load():
 
 def dump():
     with open("history", mode='a', encoding='utf-8') as f:
+        global history_in_file
         print("#", unicode(datetime.now()), file=f)
         for item_id in history - history_in_file:
             print(item_id, file=f)
+        history_in_file = frozenset(history)
 
 
 class HistoryPipeline(object):

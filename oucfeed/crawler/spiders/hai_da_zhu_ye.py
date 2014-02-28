@@ -49,10 +49,10 @@ class Spider(NewsSpider):
             titles = []
             datetimes = []
             for item in self.list_extract_pattern.findall(response.body_as_unicode()):
-                links.append(item[0])
+                links.append(self.process_link(item[0]))
                 info = item[1].split("\\n")
-                titles.append(info[0][5:])
-                datetimes.append(info[2][5:])
+                titles.append(self.process_title(info[0][5:]))
+                datetimes.append(self.process_datetime(info[2][5:]))
             yield 'link', links
             yield 'title', titles
             yield 'datetime', datetimes

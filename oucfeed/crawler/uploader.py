@@ -7,6 +7,8 @@ import json
 import urllib2
 from urlparse import urljoin
 
+from scrapy import log
+
 from oucfeed.crawler import settings
 
 
@@ -23,7 +25,12 @@ def upload(news):
     url = urljoin(settings.FEED_SERVER, "news")
     headers = {"Content-Type": "application/json"}
     request = urllib2.Request(url, data, headers)
-    r = urllib2.urlopen(request)
-    if r.code != 200:
-        raise urllib2.HTTPError(r.url, r.code, r.msg, None, None)
-
+    try:
+        response = urllib2.urlopen(request)
+        if response.code != 200:
+            raise urllib2.HTTPError(response.url, response.code, response.msg, None, None)
+        #result = json.loads(response.read())
+    except urllib2.URLError as e:
+        log.msg("推送至服务器失败 {}".format(e), logLevel=log.ERROR)
+        return False
+    return True
