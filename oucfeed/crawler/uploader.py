@@ -25,12 +25,14 @@ def upload(news):
     url = urljoin(settings.FEED_SERVER, "news")
     headers = {"Content-Type": "application/json"}
     request = urllib2.Request(url, data, headers)
-    try:
-        response = urllib2.urlopen(request)
+    try:  # FIXME: 重试
+        response = urllib2.urlopen(request, timeout=settings.UPLOAD_TIMEOUT)
         if response.code != 200:
             raise urllib2.HTTPError(response.url, response.code, response.msg, None, None)
-        #result = json.loads(response.read())
+        #result = json.loads(response.read())  # FIXME: 记录返回内容
     except urllib2.URLError as e:
         log.msg("推送至服务器失败 {}".format(e), logLevel=log.ERROR)
         return False
-    return True
+    else:
+        log.msg("推送至服务器成功")
+        return True
