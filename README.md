@@ -7,8 +7,6 @@ OUC Feed
 
 OUC SRDP #3735 的组成部分
 
-**初期开发中**
-
 
 OUC Feed - Crawler
 ====================
